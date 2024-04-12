@@ -1,0 +1,7 @@
+.env
+/output/*.mp3
+/output/*.opus
+/output/*.aac
+/output/*.flac
+/output/*.wav
+/output/*.pcm

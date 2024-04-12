@@ -1,0 +1,11 @@
+{
+    "serverPort": "8080",
+    "apiKey": "YOUR_OPENAI_KEY",
+    "adminKey": "CHANGE_ADMIN_PASSWORD",
+    "transferProtocol": "http",
+    "allowAdmin": true,
+    "allowHosting": true,
+    "needKey": true,
+    "dbName": "tts-DB",
+    "mongoURI": "YOUR_MONGODB_URI"
+  }
