@@ -14,7 +14,7 @@ func main() {
 
 	utils.PrintName()
 
-	fmt.Println("Loading config...")
+	fmt.Println("\nLoading config...")
 	config, err := utils.LoadConfig()
 	if err != nil {
 		log.Fatal(err)
