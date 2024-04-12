@@ -5,4 +5,4 @@
 /output/*.flac
 /output/*.wav
 /output/*.pcm
-/config/config.json
+config/config.json
