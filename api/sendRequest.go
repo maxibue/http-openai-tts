@@ -37,7 +37,28 @@ func SendRequest(client *mongo.Client, w http.ResponseWriter, r *http.Request) {
 	format := strings.ToLower(r.FormValue("format"))
 	text := r.FormValue("text")
 	unparsedSpeed := r.FormValue("speed")
-	speed, err := strconv.ParseFloat(unparsedSpeed, 64)
+
+	if model == "" {
+		model = "tts-1"
+	}
+	if voice == "" {
+		voice = "echo"
+	}
+	if format == "" {
+		format = "mp3"
+	}
+	var speed float64
+	if unparsedSpeed != "" {
+		parsedSpeed, err := strconv.ParseFloat(unparsedSpeed, 64)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("{\"status\": \"Input error\",\"message\": \"An error occurred while trying to parse the 'speed' value.\", \"error\": \"An error occured while running strconv.ParseFloat().\"}"))
+			return
+		}
+		speed = parsedSpeed
+	} else {
+		speed = 1.0
+	}
 
 	if !utils.CheckModel(model) {
 		w.WriteHeader(http.StatusBadRequest)
@@ -48,12 +69,6 @@ func SendRequest(client *mongo.Client, w http.ResponseWriter, r *http.Request) {
 	if !utils.CheckVoice(voice) {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided voice doesn't exist.\", \"error\": \"CheckVoice failed.\"}"))
-		return
-	}
-
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"An error occurred while trying to parse the 'speed' value.\", \"error\": \"An error occured while running strconv.ParseFloat().\"}"))
 		return
 	}
 
@@ -123,10 +138,6 @@ func SendRequest(client *mongo.Client, w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(fmt.Sprintf("{\"status\": \"OpenAI API error\",\"message\": \"The HTTP response status is not 200.\",\"error\": \"%s\"}", responseBody)))
 		return
 	}
-
-	// delete ASAP!!!!!!!!!
-	contentType := resp.Header.Get("Content-Type")
-	fmt.Println("Content-Type:", contentType)
 
 	filename := uuid.New().String()
 

@@ -10,11 +10,11 @@ config.json's "needKey" is turned off and/or your input length is not monitored 
 
 *When testing it took me not even 3 minutes (OpenAI only allows 50 RPM) to send enough requests (~135) to spend $5 of credits. That's about $90-100 if unsupervised for 1 hour.*
 
-## Models:
+## Models (Optional, Defaults to tts-1):
 - tts-1
 - tts-1-hd
 
-## Voices:
+## Voices (Optional, Defaults to echo):
 - alloy
 - echo
 - fable
@@ -22,7 +22,7 @@ config.json's "needKey" is turned off and/or your input length is not monitored 
 - nova
 - shimmer
 
-## Response formats:
+## Response formats (Optional, Defaults to mp3):
 - mp3
 - opus
 - aac
@@ -30,11 +30,11 @@ config.json's "needKey" is turned off and/or your input length is not monitored 
 - wav
 - pcm
 
-## Speed:
+## Speed (Optional, Defaults to 1):
 Select a value between 0.25 and 4.0.
 
-## Input:
-The maximum input is 4096 characters.
+## Text:
+The maximum text is 4096 characters.
 
 ## Example requests:
 - `GET /tts?model=tts-1-hd&voice=alloy&format=mp3&speed=1&text=Hello%20World`
