@@ -47,7 +47,7 @@ The maximum input is 4096 characters.
 {
 	"status": "Error description",
 	"message": "Information about the response.",
-	"error": "This is not always provided."
+	"error": "Provides either an actual go error, a premade error or an OpenAI API reponse."
 }
 ```
 

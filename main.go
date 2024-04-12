@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -10,11 +11,17 @@ import (
 )
 
 func main() {
+
+	utils.PrintName()
+
+	fmt.Println("Loading config...")
 	config, err := utils.LoadConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("Config loaded.")
 	mux := http.NewServeMux()
+	fmt.Println("Connecting to MongoDB...")
 	client := database.NewClient(config.MongoURI)
 	mux.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
 		api.Ping(w, r)
@@ -42,7 +49,9 @@ func main() {
 		})
 	}
 
-	log.Println("Starting server on port: " + config.ServerPort)
+	fmt.Println("Starting server on port: " + config.ServerPort)
+	utils.AvailableRoutes(config.AllowHosting, config.AllowAdmin)
+	log.Println("Server started.")
 	if err := http.ListenAndServe(":"+config.ServerPort, mux); err != nil {
 		log.Fatal(err)
 	}

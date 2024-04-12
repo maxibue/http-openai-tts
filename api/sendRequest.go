@@ -26,7 +26,7 @@ func SendRequest(client *mongo.Client, w http.ResponseWriter, r *http.Request) {
 	if config.NeedKey {
 		if !database.CheckKey(client, config.DBName, key) {
 			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte("{\"status\": \"Key error\",\"message\": \"The key provided in the 'KEY' header doesn't exist.\"}"))
+			w.Write([]byte("{\"status\": \"Key error\",\"message\": \"The key provided in the 'KEY' header doesn't exist.\", \"error\": \"CheckKey failed.\"}"))
 			return
 		}
 		database.AddCall(client, config.DBName, key)
@@ -41,37 +41,37 @@ func SendRequest(client *mongo.Client, w http.ResponseWriter, r *http.Request) {
 
 	if !utils.CheckModel(model) {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided model doesn't exist.\"}"))
+		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided model doesn't exist.\", \"error\": \"CheckModel failed.\"}"))
 		return
 	}
 
 	if !utils.CheckVoice(voice) {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided voice doesn't exist.\"}"))
+		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided voice doesn't exist.\", \"error\": \"CheckVoice failed.\"}"))
 		return
 	}
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"An error occurred while trying to parse the 'speed' value.\"}"))
+		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"An error occurred while trying to parse the 'speed' value.\", \"error\": \"An error occured while running strconv.ParseFloat().\"}"))
 		return
 	}
 
 	if !utils.CheckSpeed(speed) {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided 'speed' value is out of range.\"}"))
+		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided 'speed' value is out of range.\", \"error\": \"CheckSpeed failed.\"}"))
 		return
 	}
 
 	if !utils.CheckFormat(format) {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided 'format' value is not supported.\"}"))
+		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided 'format' value is not supported.\", \"error\": \"CheckFormat failed.\"}"))
 		return
 	}
 
 	if !utils.CheckText(len(text)) {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided 'text' value is out of range.\"}"))
+		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided 'text' value is out of range.\", \"error\": \"CheckText failed.\"}"))
 		return
 	}
 
@@ -120,7 +120,7 @@ func SendRequest(client *mongo.Client, w http.ResponseWriter, r *http.Request) {
 	if resp.StatusCode != http.StatusOK {
 		fmt.Printf("API Error: Status Code %d\n", resp.StatusCode)
 		w.WriteHeader(http.StatusFailedDependency)
-		w.Write([]byte(fmt.Sprintf("{\"status\": \"OpenAI API error\",\"message\": \"The HTTP response status is not 200.\",\"response\": \"%s\"}", responseBody)))
+		w.Write([]byte(fmt.Sprintf("{\"status\": \"OpenAI API error\",\"message\": \"The HTTP response status is not 200.\",\"error\": \"%s\"}", responseBody)))
 		return
 	}
 
@@ -146,7 +146,6 @@ func SendRequest(client *mongo.Client, w http.ResponseWriter, r *http.Request) {
 	} else {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(fmt.Sprintf("{\"status\": \"OK\",\"message\": \"TTS generation successfull.\",\"link\": \"%s://%s/%s.%s\"}", config.TransferProtocol, r.Host, filename, format)))
-		fmt.Printf("Audio saved to %s.%s\n", filename, format)
 		return
 	}
 }

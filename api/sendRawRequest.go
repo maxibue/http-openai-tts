@@ -21,11 +21,10 @@ func SendRawRequest(client *mongo.Client, w http.ResponseWriter, r *http.Request
 	url := "https://api.openai.com/v1/audio/speech"
 
 	key := r.Header.Get("KEY")
-
 	if config.NeedKey {
 		if !database.CheckKey(client, config.DBName, key) {
 			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte("{\"status\": \"Key error\",\"message\": \"The key provided in the 'KEY' header doesn't exist.\"}"))
+			w.Write([]byte("{\"status\": \"Key error\",\"message\": \"The key provided in the 'KEY' header doesn't exist.\", \"error\": \"CheckKey failed.\"}"))
 			return
 		}
 		database.AddCall(client, config.DBName, key)
@@ -40,37 +39,37 @@ func SendRawRequest(client *mongo.Client, w http.ResponseWriter, r *http.Request
 
 	if !utils.CheckModel(model) {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided model doesn't exist.\"}"))
+		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided model doesn't exist.\", \"error\": \"CheckModel failed.\"}"))
 		return
 	}
 
 	if !utils.CheckVoice(voice) {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided voice doesn't exist.\"}"))
+		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided voice doesn't exist.\", \"error\": \"CheckVoice failed.\"}"))
 		return
 	}
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"An error occurred while trying to parse the 'speed' value.\"}"))
+		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"An error occurred while trying to parse the 'speed' value.\", \"error\": \"An error occured while running strconv.ParseFloat().\"}"))
 		return
 	}
 
 	if !utils.CheckSpeed(speed) {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided 'speed' value is out of range.\"}"))
+		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided 'speed' value is out of range.\", \"error\": \"CheckSpeed failed.\"}"))
 		return
 	}
 
 	if !utils.CheckFormat(format) {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided 'format' value is not supported.\"}"))
+		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided 'format' value is not supported.\", \"error\": \"CheckFormat failed.\"}"))
 		return
 	}
 
 	if !utils.CheckText(len(text)) {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided 'text' value is out of range.\"}"))
+		w.Write([]byte("{\"status\": \"Input error\",\"message\": \"The provided 'text' value is out of range.\", \"error\": \"CheckText failed.\"}"))
 		return
 	}
 
