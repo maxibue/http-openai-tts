@@ -40,7 +40,7 @@ func AdminRequest(client *mongo.Client, w http.ResponseWriter, r *http.Request) 
 		}
 		if database.AddKey(client, config.DBName, key_name, new_key) {
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(fmt.Sprintf("{\"status\": \"OK\",\"message\": \"Created the key %s successfully.\", \"key\": \"%s\"}", key_name, new_key)))
+			w.Write([]byte(fmt.Sprintf("{\"status\": \"OK\",\"message\": \"Successfully created the key: %s\", \"key\": \"%s\"}", key_name, new_key)))
 			return
 		} else {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -55,7 +55,7 @@ func AdminRequest(client *mongo.Client, w http.ResponseWriter, r *http.Request) 
 		}
 		if database.RemoveKey(client, config.DBName, key_name) {
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(fmt.Sprintf("{\"status\": \"OK\",\"message\": \"Removed the key %s successfully.\"}", key_name)))
+			w.Write([]byte(fmt.Sprintf("{\"status\": \"OK\",\"message\": \"Successfully removed the key: %s\"}", key_name)))
 			return
 		} else {
 			w.WriteHeader(http.StatusInternalServerError)
