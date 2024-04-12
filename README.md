@@ -40,6 +40,8 @@ The maximum input is 4096 characters.
 - `GET /tts?model=tts-1-hd&voice=alloy&format=mp3&speed=1&text=Hello%20World`
 - `GET /raw?model=tts-1&voice=echo&format=wav&speed=1.3&text=Foo%20Bar`
 
+*If "allowHosting" is set to false /tts automatically returns the /raw output.*
+
 ## Error response format for /tts & /raw:
 ```json
 {
@@ -54,7 +56,7 @@ The maximum input is 4096 characters.
 {
 	"status": "OK",
 	"message": "Information about the response.",
-	"link": "Contains a link to the hosted file. (Only appears if status is 'OK')"
+	"link": "Contains a link to the hosted file."
 }
 ```
 ## Response for /raw:
@@ -65,5 +67,25 @@ Just returns the audio file content.
 {
 	"status": "OK",
 	"message": "Pong!"
+}
+```
+## Admin Controls (adding & removing keys)
+- `POST /admin/add?name=Alvin&key=cm8f4a250816`
+- `POST /admin/remove?name=Theodore`
+
+## Response for /admin/add:
+```json
+{
+	"status": "OK",
+	"message": "Created the key Alvin successfully.",
+	"key": "cm8f4a250816"
+}
+```
+
+## Response for /admin/remove:
+```json
+{
+	"status": "OK",
+	"message": "Removed the key Theodore successfully."
 }
 ```
