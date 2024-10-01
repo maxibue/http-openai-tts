@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/maximierung/http-openai-tts/structs"
+	"github.com/maxibue/http-openai-tts/structs"
 )
 
 func LoadConfig() (structs.Config, error) {
