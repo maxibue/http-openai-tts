@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/maximierung/http-openai-tts/database"
-	"github.com/maximierung/http-openai-tts/structs"
-	"github.com/maximierung/http-openai-tts/utils"
+	"github.com/maxibue/http-openai-tts/database"
+	"github.com/maxibue/http-openai-tts/structs"
+	"github.com/maxibue/http-openai-tts/utils"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

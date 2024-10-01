@@ -1,4 +1,4 @@
-module github.com/maximierung/http-openai-tts
+module github.com/maxibue/http-openai-tts
 
 go 1.22.0
 

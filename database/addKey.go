@@ -3,7 +3,7 @@ package database
 import (
 	"context"
 
-	"github.com/maximierung/http-openai-tts/structs"
+	"github.com/maxibue/http-openai-tts/structs"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

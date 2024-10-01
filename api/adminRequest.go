@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/maximierung/http-openai-tts/database"
-	"github.com/maximierung/http-openai-tts/utils"
+	"github.com/maxibue/http-openai-tts/database"
+	"github.com/maxibue/http-openai-tts/utils"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
